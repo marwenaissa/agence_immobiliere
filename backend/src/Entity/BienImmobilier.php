@@ -62,6 +62,17 @@ class BienImmobilier
     #[ORM\OneToMany(mappedBy: 'bien', targetEntity: OperationBien::class)]
     private Collection $operationBiens;
 
+
+    /**
+     * @var Collection<int, PieceJointe>
+     */
+    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: PieceJointe::class, cascade: ['persist', 'remove'])]
+    private Collection $pieceJointes;
+
+
+
+
+
     public function __construct()
     {
         $this->visites = new ArrayCollection();
@@ -259,6 +270,35 @@ class BienImmobilier
             // set the owning side to null (unless already changed)
             if ($operationBien->getBien() === $this) {
                 $operationBien->setBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+        
+    public function getPieceJointes(): Collection
+    {
+        return $this->pieceJointes;
+    }
+
+    public function addPieceJointe(PieceJointe $pieceJointe): static
+    {
+        if (!$this->pieceJointes->contains($pieceJointe)) {
+            $this->pieceJointes->add($pieceJointe);
+            $pieceJointe->setBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removePieceJointe(PieceJointe $pieceJointe): static
+    {
+        if ($this->pieceJointes->removeElement($pieceJointe)) {
+            // set the owning side to null (unless already changed)
+            if ($pieceJointe->getBien() === $this) {
+                $pieceJointe->setBien(null);
             }
         }
 

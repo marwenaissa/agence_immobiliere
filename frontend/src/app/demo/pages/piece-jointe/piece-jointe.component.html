@@ -1,0 +1,24 @@
+<div class="card mb-3">
+  <div class="card-header">Pièces Jointes</div>
+  <div class="card-body">
+    <input type="file" multiple (change)="onFilesSelected($event)" class="form-control mb-2">
+    
+    <div *ngFor="let file of selectedFiles; let i = index" class="mb-2">
+      <strong>{{ file.name }}</strong>
+      <input type="text" [(ngModel)]="descriptions[i]" placeholder="Description (facultative)" class="form-control mt-1">
+    </div>
+
+    <button class="btn btn-primary mt-2" (click)="uploadFiles()" [disabled]="!selectedFiles.length">Uploader</button>
+    <div *ngIf="uploadProgress > 0" class="mt-2">
+      Progression: {{ uploadProgress }}%
+    </div>
+
+    <hr>
+
+    <div *ngFor="let piece of pieceJointes" class="d-flex justify-content-between align-items-center mb-2">
+      <a [href]="piece.urlFichier" target="_blank">{{ piece.urlFichier }}</a>
+      <span>{{ piece.description }}</span>
+      <button class="btn btn-danger btn-sm" (click)="deletePiece(piece)">Supprimer</button>
+    </div>
+  </div>
+</div>

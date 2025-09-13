@@ -1,22 +1,24 @@
 <div class="container mt-3">
-  <h3 class="page-title">Liste des Villes</h3>
-  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Ville</button>
+  <h3 class="page-title">Liste des Départements</h3>
+  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Département</button>
 
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>ID</th>
         <th>Nom</th>
+        <th>Ville</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let ville of villes">
-        <td>{{ ville.id }}</td>
-        <td>{{ ville.nom }}</td>
+      <tr *ngFor="let dep of departements">
+        <td>{{ dep.id }}</td>
+        <td>{{ dep.nom }}</td>
+        <td>{{ dep.ville?.nom }}</td>
         <td>
-          <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(ville)">Modifier</button>
-          <button class="btn btn-danger btn-sm" (click)="openDeleteModal(ville)">Supprimer</button>
+          <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(dep)">Modifier</button>
+          <button class="btn btn-danger btn-sm" (click)="openDeleteModal(dep)">Supprimer</button>
         </td>
       </tr>
     </tbody>
@@ -28,14 +30,21 @@
   <div class="modal-dialog modal-dialog-centered styled-modal">
     <div class="modal-content">
       <div class="modal-header modal-header-neutral">
-        <h5 class="modal-title">{{ editing ? 'Modifier Ville' : 'Ajouter Ville' }}</h5>
+        <h5 class="modal-title">{{ editing ? 'Modifier Département' : 'Ajouter Département' }}</h5>
         <button type="button" class="btn-close" (click)="closeModal()"></button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="saveVille($event)">
+        <form (ngSubmit)="saveDepartement($event)">
           <div class="mb-3">
-            <label for="villeNom" class="form-label">Nom</label>
-            <input type="text" id="villeNom" class="form-control" [(ngModel)]="villeForm.nom" name="nom" required>
+            <label for="depNom" class="form-label">Nom</label>
+            <input type="text" id="depNom" class="form-control" [(ngModel)]="departementForm.nom" name="nom" required>
+          </div>
+          <div class="mb-3">
+            <label for="ville" class="form-label">Ville</label>
+            <select id="ville" class="form-select" [(ngModel)]="departementForm.ville" name="ville" required>
+              <option *ngFor="let v of villes" [ngValue]="v">{{ v.nom }}</option>
+            </select>
+
           </div>
           <div class="d-flex justify-content-end">
             <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Annuler</button>
@@ -56,7 +65,7 @@
         <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
       </div>
       <div class="modal-body">
-        <p>Voulez-vous vraiment supprimer la ville <strong>{{ villeToDelete?.nom }}</strong> ?</p>
+        <p>Voulez-vous vraiment supprimer le département <strong>{{ departementToDelete?.nom }}</strong> ?</p>
         <div class="d-flex justify-content-end">
           <button class="btn btn-secondary me-2" (click)="closeDeleteModal()">Annuler</button>
           <button class="btn btn-danger" (click)="confirmDelete()">Supprimer</button>

@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { VillesComponent } from './demo/pages/villes/villes.component';
+import { DepartementsComponent } from './demo/pages/departements/departements.component';
  
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: 'villes',
         component: VillesComponent
+      },
+      {
+        path: 'departements',   // <-- ICI : "departements" (pluriel)
+        component: DepartementsComponent
       }
 
     ]

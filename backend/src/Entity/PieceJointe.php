@@ -18,6 +18,10 @@ class PieceJointe
     #[ORM\JoinColumn(nullable: false)]
     private ?EtatLieu $etatLieu = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pieceJointes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?BienImmobilier $bien = null;
+
     #[ORM\Column(length: 255)]
     private ?string $urlFichier = null;
 
@@ -64,4 +68,16 @@ class PieceJointe
 
         return $this;
     }
+
+    public function getBien(): ?BienImmobilier
+    {
+        return $this->bien;
+    }
+
+    public function setBien(?BienImmobilier $bien): static
+    {
+        $this->bien = $bien;
+        return $this;
+    }
+
 }

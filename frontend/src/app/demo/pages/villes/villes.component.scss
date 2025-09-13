@@ -1,0 +1,42 @@
+/* Fond modale */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4); /* légèrement transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+/* Style modales */
+.styled-modal {
+  max-width: 500px;
+  width: 90%;
+  background-color: #ffffff; /* blanc */
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+/* Header modale neutre */
+.modal-header-neutral {
+  background-color: #e9ecef; /* gris clair */
+  color: #212529;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem 1.25rem; /* plus haut */
+}
+
+/* Corps modale */
+.modal-body {
+  padding: 1.5rem;
+}
+
+/* Boutons */
+.modal-body .btn {
+  min-width: 100px;
+}

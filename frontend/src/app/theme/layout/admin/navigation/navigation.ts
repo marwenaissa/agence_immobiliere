@@ -181,13 +181,31 @@ export const NavigationItems: NavigationItem[] = [
         external: true
       },
       {
-        id: 'villes',
+        id: 'Villes',
         title: 'Villes',
         type: 'item',
         icon: 'feather icon-map-pin',
         classes: 'nav-item',
         url: '/villes'   // <-- le path défini dans app-routing.module.ts
-      }
+      },
+      {
+      id: 'Departement',
+      title: 'Departement',
+      type: 'item',
+      icon: 'feather icon-map-pin',
+      classes: 'nav-item',
+      url: '/departements'
+      },
+      ,
+      {
+      id: 'BienImmobilier',
+      title: 'BienImmobilier',
+      type: 'item',
+      icon: 'feather icon-map-pin',
+      classes: 'nav-item',
+      url: '/BienImmobilier'
+    }
+
     ]
   }
 ];

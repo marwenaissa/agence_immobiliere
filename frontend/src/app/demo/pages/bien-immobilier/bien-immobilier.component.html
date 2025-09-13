@@ -1,0 +1,74 @@
+<div class="container mt-3">
+  <h3 class="page-title">Liste des Biens Immobiliers</h3>
+  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Bien</button>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Adresse</th>
+        <th>Statut</th>
+        <th>Montant</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bien of biens">
+        <td>{{ bien.id }}</td>
+        <td>{{ bien.titre }}</td>
+        <td>{{ bien.adresse }}</td>
+        <td>{{ bien.statut }}</td>
+        <td>{{ bien.mantant }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(bien)">Modifier</button>
+          <button class="btn btn-danger btn-sm me-2" (click)="deleteBien(bien.id)">Supprimer</button>
+          <button class="btn btn-info btn-sm" (click)="managePieces(bien.id)">Pièces Jointes</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal Ajout / Modification -->
+  <div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal-dialog modal-dialog-centered styled-modal">
+      <div class="modal-content">
+        <div class="modal-header modal-header-neutral">
+          <h5 class="modal-title">{{ editing ? 'Modifier Bien' : 'Ajouter Bien' }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveBien($event)">
+            <div class="mb-3">
+              <label class="form-label">Titre</label>
+              <input type="text" class="form-control" [(ngModel)]="bienForm.titre" name="titre" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" [(ngModel)]="bienForm.description" name="description" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Adresse</label>
+              <input type="text" class="form-control" [(ngModel)]="bienForm.adresse" name="adresse" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Statut</label>
+              <input type="text" class="form-control" [(ngModel)]="bienForm.statut" name="statut" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Montant</label>
+              <input type="text" class="form-control" [(ngModel)]="bienForm.mantant" name="mantant" required>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Annuler</button>
+              <button type="submit" class="btn btn-success">{{ editing ? 'Modifier' : 'Ajouter' }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pièces jointes -->
+  <app-piece-jointe *ngIf="selectedBienIdForPieces" [bienId]="selectedBienIdForPieces"></app-piece-jointe>
+</div>
