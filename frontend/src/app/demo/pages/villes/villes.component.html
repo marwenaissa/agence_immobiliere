@@ -1,0 +1,45 @@
+<div class="container mt-3">
+  <h3>Liste des Villes</h3>
+  <button class="btn btn-primary mb-2" (click)="openCreateModal()">Ajouter Ville</button>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ville of villes">
+        <td>{{ ville.id }}</td>
+        <td>{{ ville.nom }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm me-1" (click)="openEditModal(ville)">Modifier</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteVille(ville.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" [class.show]="showModal" style="display: block;" *ngIf="showModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ editing ? 'Modifier Ville' : 'Ajouter Ville' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveVille($event)">
+          <div class="mb-3">
+            <label for="villeNom" class="form-label">Nom</label>
+            <input type="text" id="villeNom" class="form-control" [(ngModel)]="villeForm.nom" name="nom" required>
+          </div>
+          <button type="submit" class="btn btn-success">{{ editing ? 'Modifier' : 'Ajouter' }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
