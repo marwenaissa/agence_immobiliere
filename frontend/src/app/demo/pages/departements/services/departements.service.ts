@@ -7,7 +7,7 @@ import { Departement } from '../models/departement.model';
   providedIn: 'root'
 })
 export class DepartementsService {
-  private apiUrl = 'http://localhost:8000/api/departements'; // adapte selon ton backend
+  private apiUrl = 'http://127.0.0.1:8000/api/departements'; // adapte selon ton backend
 
   constructor(private http: HttpClient) {}
 

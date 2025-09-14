@@ -1,13 +1,14 @@
-@if (!item().hidden) {
-  <li class="nav-item pcoded-menu-caption">
-    <label for="title">{{ item().title }}</label>
-  </li>
-  @for (items of item().children; track items) {
-    @if (items.type === 'collapse') {
-      <app-nav-collapse [item]="items" />
-    }
-    @if (items.type === 'item') {
-      <app-nav-item [item]="items" />
-    }
-  }
-}
+<!-- Vérifie que l'item n'est pas caché -->
+<li *ngIf="!item()?.hidden" class="nav-item pcoded-menu-caption">
+  <label>{{ item()?.title }}</label>
+</li>
+
+<!-- Boucle sur les enfants si ils existent -->
+<ng-container *ngFor="let child of item()?.children ?? []">
+  <ng-container *ngIf="child?.type === 'collapse'">
+    <app-nav-collapse [item]="child"></app-nav-collapse>
+  </ng-container>
+  <ng-container *ngIf="child?.type === 'item'">
+    <app-nav-item [item]="child"></app-nav-item>
+  </ng-container>
+</ng-container>

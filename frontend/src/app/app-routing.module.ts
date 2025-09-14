@@ -6,7 +6,10 @@ import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { VillesComponent } from './demo/pages/villes/villes.component';
 import { DepartementsComponent } from './demo/pages/departements/departements.component';
- 
+import { BienImmobilierComponent } from './demo/pages/bien-immobilier/bien-immobilier.component';
+
+
+      
 const routes: Routes = [
   {
     path: '',
@@ -48,8 +51,9 @@ const routes: Routes = [
       {
         path: 'departements',   // <-- ICI : "departements" (pluriel)
         component: DepartementsComponent
-      }
-
+      },
+      { path: 'bien-immobilier', 
+        component: BienImmobilierComponent }
     ]
   },
   {

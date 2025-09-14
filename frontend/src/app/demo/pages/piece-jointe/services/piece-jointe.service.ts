@@ -1,36 +1,30 @@
-// src/app/biens/services/piece-jointe.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PieceJointe } from '../models/piece-jointe.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class PieceJointeService {
-  private apiUrl = 'http://localhost:8000/api/piece-jointes';
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) {}
 
   getByBien(bienId: number): Observable<PieceJointe[]> {
-    return this.http.get<PieceJointe[]>(`${this.apiUrl}?bien_id=${bienId}`);
+    return this.http.get<PieceJointe[]>(`${this.apiUrl}/biens/${bienId}/pieces`);
   }
 
-  uploadFiles(bienId: number, files: File[], descriptions: string[] = []): Observable<HttpEvent<any>> {
+  uploadFiles(bienId: number, files: File[], descriptions: string[]): Observable<HttpEvent<any>> {
     const formData = new FormData();
-    files.forEach((file, index) => {
-      formData.append('files[]', file);
-      if (descriptions[index]) {
-        formData.append('descriptions[]', descriptions[index]);
-      }
-    });
-    formData.append('bien_id', bienId.toString());
+    files.forEach((file, i) => formData.append('files[]', file));
+    descriptions.forEach(desc => formData.append('descriptions[]', desc));
 
-    const req = new HttpRequest('POST', this.apiUrl, formData, { reportProgress: true, responseType: 'json' });
+    const req = new HttpRequest('POST', `${this.apiUrl}/biens/${bienId}/pieces`, formData, {
+      reportProgress: true,
+    });
     return this.http.request(req);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  delete(pieceId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/pieces/${pieceId}`);
   }
 }

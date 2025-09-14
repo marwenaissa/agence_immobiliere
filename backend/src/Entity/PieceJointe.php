@@ -14,13 +14,14 @@ class PieceJointe
     #[ORM\Column]
     private ?int $id = null;
 
+    // Une pièce peut être rattachée à un bien OU à un état des lieux, mais pas forcément les deux
     #[ORM\ManyToOne(inversedBy: 'pieceJointes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?EtatLieu $etatLieu = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?BienImmobilier $bien = null;
 
     #[ORM\ManyToOne(inversedBy: 'pieceJointes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?BienImmobilier $bien = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?EtatLieu $etatLieu = null;
 
     #[ORM\Column(length: 255)]
     private ?string $urlFichier = null;
@@ -28,45 +29,12 @@ class PieceJointe
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $type = null; // ex: 'image', 'document', 'contrat', etc.
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEtatLieu(): ?EtatLieu
-    {
-        return $this->etatLieu;
-    }
-
-    public function setEtatLieu(?EtatLieu $etatLieu): static
-    {
-        $this->etatLieu = $etatLieu;
-
-        return $this;
-    }
-
-    public function getUrlFichier(): ?string
-    {
-        return $this->urlFichier;
-    }
-
-    public function setUrlFichier(string $urlFichier): static
-    {
-        $this->urlFichier = $urlFichier;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
     }
 
     public function getBien(): ?BienImmobilier
@@ -80,4 +48,47 @@ class PieceJointe
         return $this;
     }
 
+    public function getEtatLieu(): ?EtatLieu
+    {
+        return $this->etatLieu;
+    }
+
+    public function setEtatLieu(?EtatLieu $etatLieu): static
+    {
+        $this->etatLieu = $etatLieu;
+        return $this;
+    }
+
+    public function getUrlFichier(): ?string
+    {
+        return $this->urlFichier;
+    }
+
+    public function setUrlFichier(string $urlFichier): static
+    {
+        $this->urlFichier = $urlFichier;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
+        return $this;
+    }
 }

@@ -10,6 +10,8 @@
         <th>Adresse</th>
         <th>Statut</th>
         <th>Montant</th>
+        <th>Type</th>
+        <th>Propriétaire</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -19,19 +21,21 @@
         <td>{{ bien.titre }}</td>
         <td>{{ bien.adresse }}</td>
         <td>{{ bien.statut }}</td>
-        <td>{{ bien.mantant }}</td>
+        <td>{{ bien.montant }}</td>
+        <td>{{ bien.type?.libelle || '-' }}</td>
+        <td>{{ bien.proprietaire?.utilisateur?.nom || '-' }}</td> 
         <td>
           <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(bien)">Modifier</button>
           <button class="btn btn-danger btn-sm me-2" (click)="deleteBien(bien.id)">Supprimer</button>
-          <button class="btn btn-info btn-sm" (click)="managePieces(bien.id)">Pièces Jointes</button>
         </td>
       </tr>
     </tbody>
   </table>
 
   <!-- Modal Ajout / Modification -->
+  <!-- Modal Ajout / Modification -->
   <div class="modal-backdrop" *ngIf="showModal">
-    <div class="modal-dialog modal-dialog-centered styled-modal">
+    <div class="modal-dialog modal-dialog-centered styled-modal modal-lg">
       <div class="modal-content">
         <div class="modal-header modal-header-neutral">
           <h5 class="modal-title">{{ editing ? 'Modifier Bien' : 'Ajouter Bien' }}</h5>
@@ -39,6 +43,7 @@
         </div>
         <div class="modal-body">
           <form (ngSubmit)="saveBien($event)">
+            <!-- Les champs du bien (titre, description, etc.) -->
             <div class="mb-3">
               <label class="form-label">Titre</label>
               <input type="text" class="form-control" [(ngModel)]="bienForm.titre" name="titre" required>
@@ -51,14 +56,85 @@
               <label class="form-label">Adresse</label>
               <input type="text" class="form-control" [(ngModel)]="bienForm.adresse" name="adresse" required>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Statut</label>
-              <input type="text" class="form-control" [(ngModel)]="bienForm.statut" name="statut" required>
-            </div>
+
             <div class="mb-3">
               <label class="form-label">Montant</label>
-              <input type="text" class="form-control" [(ngModel)]="bienForm.mantant" name="mantant" required>
+              <input type="text" class="form-control" [(ngModel)]="bienForm.montant" name="montant" required>
             </div>
+
+
+                      <!-- Statut -->
+            <div class="mb-3">
+              <label class="form-label">Statut</label>
+              <select class="form-select" [(ngModel)]="bienForm.statut" name="statut" required>
+                <option value="encours">En cours</option>
+                <option value="vendu">Vendu</option>
+                <option value="loué">Loué</option>
+              </select>
+            </div>
+
+            <!-- Offre Type -->
+            <div class="mb-3">
+              <label class="form-label">Offre</label>
+              <select [(ngModel)]="bienForm.offreType" name="offreType" class="form-control">
+                <option value="Vente">Vente</option>
+                <option value="Location">Location</option>
+                <option value="Échange">Échange</option>
+              </select>
+            </div>
+
+            <!-- Surface -->
+            <div class="mb-3">
+              <label class="form-label">Surface (m²)</label>
+              <input type="number" class="form-control" [(ngModel)]="bienForm.surface" name="surface">
+            </div>
+
+            <!-- Nombre de chambres -->
+            <div class="mb-3">
+              <label class="form-label">Nombre de chambres</label>
+              <input type="number" class="form-control" [(ngModel)]="bienForm.nbreChambres" name="nbreChambres">
+            </div>
+
+
+            
+            <!-- Propriétaire -->
+            <div class="mb-3">
+              <label class="form-label">Propriétaire</label>
+              <select [(ngModel)]="bienForm.proprietaire" class="form-select" name="proprietaire">
+                <option *ngFor="let p of proprietaires" [ngValue]="p">
+                  {{ p.nomUtilisateur }} {{ p.prenomUtilisateur }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Type -->
+            <div class="mb-3">
+              <label class="form-label">Type</label>
+              <select class="form-select" [(ngModel)]="bienForm.type" name="type">
+                <option *ngFor="let t of types" [ngValue]="t">{{ t.libelle }}</option>
+              </select>
+            </div>
+
+            <!-- Département -->
+            <div class="mb-3">
+              <label class="form-label">Département</label>
+              <select class="form-select" [(ngModel)]="bienForm.departement" name="departement">
+                <option *ngFor="let d of departements" [ngValue]="d">{{ d.nom }}</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Pièce jointe</label>
+              <input type="file" class="form-control" (change)="onFileSelected($event)">
+              <div *ngIf="selectedFile" class="mt-2">
+                <strong>Fichier sélectionné :</strong> {{ selectedFile.name }}
+        <button class="btn btn-info btn-sm" (click)="managePieces(bien.id)">Pièces Jointes</button>
+
+              </div>
+            </div>
+
+
+
             <div class="d-flex justify-content-end">
               <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Annuler</button>
               <button type="submit" class="btn btn-success">{{ editing ? 'Modifier' : 'Ajouter' }}</button>
@@ -68,6 +144,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Pièces jointes -->
   <app-piece-jointe *ngIf="selectedBienIdForPieces" [bienId]="selectedBienIdForPieces"></app-piece-jointe>

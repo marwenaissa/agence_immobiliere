@@ -21,15 +21,29 @@ export class BienImmobilierComponent implements OnInit {
   editing = false;
   bienForm: BienImmobilier = {
     id: 0, titre: '', description: '', adresse: '',
-    statut: '', offreType: '', mantant: ''
+    statut: '', offreType: '', montant: ''
   };
   selectedBienIdForPieces?: number;
+
+  proprietaires: any[] = [];
+    types: any[] = [];
+    departements: any[] = [];
+
+    selectedFile?: File; // remplacer selectedFiles: File[]
+
 
   constructor(private bienService: BienImmobilierService) {}
 
   ngOnInit(): void {
     this.loadBiens();
   }
+
+  onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.selectedFile = input.files[0]; // une seule pièce jointe
+  }
+}
 
   loadBiens() {
     this.bienService.getAll().subscribe({
@@ -40,42 +54,100 @@ export class BienImmobilierComponent implements OnInit {
 
   openCreateModal() {
     this.editing = false;
-    this.bienForm = { id: 0, titre: '', description: '', adresse: '', statut: '', offreType: '', mantant: '' };
-    this.showModal = true;
-  }
+    this.bienForm = { id: 0, titre: '', description: '', adresse: '', statut: '', offreType: '', montant: '' };
+    
+    // Charger les listes avant d’ouvrir le modal
+    this.loadProprietaires();
+    this.loadTypes();
+    this.loadDepartements();
 
-  openEditModal(bien: BienImmobilier) {
+    this.showModal = true;
+    }
+
+    openEditModal(bien: BienImmobilier) {
     this.editing = true;
     this.bienForm = { ...bien };
+
+    // Mapper les objets pour le select
+    this.bienForm.proprietaire = this.proprietaires.find(p => p.id === bien.proprietaire?.id);
+    this.bienForm.type = this.types.find(t => t.id === bien.type?.id);
+    this.bienForm.departement = this.departements.find(d => d.id === bien.departement?.id);
+
+    // Charger les listes si elles sont vides
+    if (this.proprietaires.length === 0) this.loadProprietaires();
+    if (this.types.length === 0) this.loadTypes();
+    if (this.departements.length === 0) this.loadDepartements();
+
     this.showModal = true;
-  }
+    }
+
 
   closeModal() {
     this.showModal = false;
   }
 
-  saveBien(event?: Event) {
-    if (event) event.preventDefault();
-
-    if (this.editing) {
-      this.bienService.update(this.bienForm.id, this.bienForm).subscribe({
-        next: updated => {
-          const index = this.biens.findIndex(b => b.id === updated.id);
-          if (index !== -1) this.biens[index] = updated;
-          this.closeModal();
-        },
-        error: err => console.error('Erreur modification:', err)
-      });
-    } else {
-      this.bienService.create(this.bienForm).subscribe({
-        next: newBien => {
-          this.biens.push(newBien);
-          this.closeModal();
-        },
-        error: err => console.error('Erreur ajout:', err)
-      });
+  
+    loadProprietaires() {
+    this.bienService.getProprietaires().subscribe(data => this.proprietaires = data);
     }
-  }
+
+    loadTypes() {
+    this.bienService.getTypes().subscribe(data => this.types = data);
+    }
+
+    loadDepartements() {
+    this.bienService.getDepartements().subscribe(data => this.departements = data);
+    }
+
+   saveBien(event?: Event) {
+      if (event) event.preventDefault();
+
+      console.log('bienForm:', this.bienForm); // <-- debug complet
+  console.log('Type ID:', this.bienForm.type?.id); // <-- debug type id
+
+  
+      const formData = new FormData();
+      formData.append('titre', this.bienForm.titre);
+      formData.append('description', this.bienForm.description);
+      formData.append('adresse', this.bienForm.adresse);
+      formData.append('statut', this.bienForm.statut);
+      formData.append('montant', this.bienForm.montant);
+      formData.append('offreType', this.bienForm.offreType);
+      
+        formData.append('type_id', this.bienForm.type.id.toString());
+
+  formData.append('proprietaire_id', this.bienForm.proprietaire.id.toString());
+  formData.append('departement_id', this.bienForm.departement.id.toString())
+
+
+
+      if (this.selectedFile) {
+        formData.append('file', this.selectedFile); // une seule pièce jointe
+      }
+
+      if (this.editing) {
+        this.bienService.updateWithFile(this.bienForm.id, formData).subscribe({
+          next: updated => {
+            const index = this.biens.findIndex(b => b.id === updated.id);
+            if (index !== -1) this.biens[index] = updated;
+            this.selectedFile = undefined;
+            this.closeModal();
+          },
+          error: err => console.error('Erreur modification:', err)
+        });
+      } else {
+        this.bienService.createWithFile(formData).subscribe({
+          next: newBien => {
+            this.biens.push(newBien);
+            this.selectedFile = undefined;
+            this.closeModal();
+          },
+          error: err => console.error('Erreur ajout:', err)
+        });
+      }
+    }
+
+
 
   deleteBien(id: number) {
     if (confirm('Voulez-vous vraiment supprimer ce bien ?')) {

@@ -16,25 +16,24 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-#[Route('/api/typebien')]
+#[Route('/api/types')]
 class TypeBienController extends AbstractController
 {
     // Liste tous les types de bien
-    #[Route('/', name: 'typebien_index', methods: ['GET'])]
-    public function index(TypeBienRepository $repository, SerializerInterface $serializer): JsonResponse
-    {
-        $types = $repository->findAll();
+    // src/Controller/TypeBienController.php
+    #[Route('', name: 'api_types', methods: ['GET'])]
+    public function getTypes(EntityManagerInterface $em): JsonResponse {
+        $types = $em->getRepository(TypeBien::class)->findAll();
 
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
+        // Retourner juste id et libelle
+        $data = array_map(fn($t) => [
+            'id' => $t->getId(),
+            'libelle' => $t->getLibelle()
+        ], $types);
 
-        $json = $serializer->serialize($types, 'json', [
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => fn($object) => $object->getId(),
-        ]);
-
-        return new JsonResponse($json, Response::HTTP_OK, [], true);
+        return $this->json($data);
     }
+
 
     // Affiche un type de bien par id
     #[Route('/{id}', name: 'typebien_show', methods: ['GET'])]

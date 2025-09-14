@@ -8,7 +8,7 @@ import { Ville } from '../models/ville.model';
   providedIn: 'root' // important pour que Angular puisse l'injecter partout
 })
 export class VillesService {
-  private apiUrl = 'http://localhost:8000/api/villes';
+  private apiUrl = 'http://127.0.0.1:8000/api/villes';
 
   constructor(private http: HttpClient) {}
 

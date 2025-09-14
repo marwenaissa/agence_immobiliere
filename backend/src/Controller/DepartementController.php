@@ -22,22 +22,20 @@ class DepartementController extends AbstractController
     #[Route('', name: 'list', methods: ['GET'])]
     public function list(EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
     {
-        // Récupérer le repository via l'EntityManager
+        // Récupérer le repository
         $departementRepository = $em->getRepository(\App\Entity\Departement::class);
 
         // Récupérer tous les départements
         $departements = $departementRepository->findAll();
 
-        // Sérialiser
-        $json = $serializer->serialize(
-            $departements,
-            'json',
-            [
-                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => fn($object) => $object->getId(),
-            ]
-        );
+        // Transformer en tableau simple avec uniquement id et nom
+        $data = array_map(fn($d) => [
+            'id' => $d->getId(),
+            'nom' => $d->getNom(),
+        ], $departements);
 
-        return new JsonResponse($json, 200, [], true);
+        // Retourner le JSON
+        return $this->json($data);
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]

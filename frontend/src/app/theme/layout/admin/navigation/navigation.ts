@@ -196,15 +196,8 @@ export const NavigationItems: NavigationItem[] = [
       classes: 'nav-item',
       url: '/departements'
       },
-      ,
-      {
-      id: 'BienImmobilier',
-      title: 'BienImmobilier',
-      type: 'item',
-      icon: 'feather icon-map-pin',
-      classes: 'nav-item',
-      url: '/BienImmobilier'
-    }
+      { id: 'bienImmobilier', title: 'Bien Immobilier', type: 'item', icon: 'feather icon-map-pin', classes: 'nav-item', url: '/bien-immobilier' }
+
 
     ]
   }
