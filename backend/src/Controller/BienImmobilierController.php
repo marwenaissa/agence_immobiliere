@@ -30,15 +30,23 @@ class BienImmobilierController extends AbstractController
 {
         
     #[Route('', name: 'bien_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
 
-        if (!$data) return $this->json(['error' => 'JSON invalide'], 400);
+        if (empty($data)) {
+            $data = json_decode($request->getContent(), true);
+        }
+
+        if (!$data) {
+            return $this->json(['error' => 'Aucun JSON reçu ou JSON invalide.'], 400);
+        }
 
         $requiredFields = ['titre', 'description', 'adresse', 'statut', 'offreType', 'montant', 'type_id', 'proprietaire_id', 'departement_id'];
         foreach ($requiredFields as $field) {
-            if (!isset($data[$field])) return $this->json(['error' => "Le champ '$field' est obligatoire."], 400);
+            if (!isset($data[$field])) {
+                return $this->json(['error' => "Le champ '$field' est obligatoire."], 400);
+            }
         }
 
         $bien = new BienImmobilier();
@@ -54,15 +62,43 @@ class BienImmobilierController extends AbstractController
         $departement = $em->getRepository(Departement::class)->find($data['departement_id']);
 
         if (!$type || !$proprietaire || !$departement) {
-            return $this->json(['error' => 'Type, Proprietaire ou Departement introuvable'], 400);
+            return $this->json(['error' => 'TypeBien, Proprietaire ou Departement introuvable.'], 400);
         }
 
-        $bien->setType($type)->setProprietaire($proprietaire)->setDepartement($departement);
+        $bien->setType($type);
+        $bien->setProprietaire($proprietaire);
+        $bien->setDepartement($departement);
+
         $em->persist($bien);
         $em->flush();
 
+        // 🔹 Gestion des fichiers multiples
+        $files = $request->files->get('files');
+        if ($files && count($files) > 0) {
+            foreach ($files as $file) {
+                $piece = new PieceJointe();
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+                try {
+                    $file->move($this->getParameter('pieces_directory'), $newFilename);
+                } catch (\Exception $e) {
+                    return $this->json(['error' => 'Erreur upload fichier: '.$e->getMessage()], 500);
+                }
+
+                $piece->setUrlFichier($newFilename)
+                    ->setBien($bien)
+                    ->setType('image');
+
+                $em->persist($piece);
+            }
+            $em->flush();
+        }
+
         return $this->json($bien, 201, [], ['groups' => 'bien:read']);
     }
+
 
 
     #[Route('', name: 'bien_list', methods: ['GET'])]

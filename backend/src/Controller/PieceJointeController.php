@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\PieceJointe;
-use App\Repository\BienImmobilier;
+use App\Entity\BienImmobilier;
 use App\Repository\BienImmobilierRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 final class PieceJointeController extends AbstractController{
