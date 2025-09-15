@@ -8,6 +8,7 @@ import { VillesComponent } from './demo/pages/villes/villes.component';
 import { DepartementsComponent } from './demo/pages/departements/departements.component';
 import { BienImmobilierComponent } from './demo/pages/bien-immobilier/bien-immobilier.component';
 import { VisiteComponent } from './demo/pages/visite/visite.component';
+import { OperationsComponent } from './demo/pages/operation/operation.component';
 
       
 const routes: Routes = [
@@ -56,6 +57,7 @@ const routes: Routes = [
         component: BienImmobilierComponent 
       },
       { path: 'visites/:id', component: VisiteComponent }, 
+      { path: 'operation', component: OperationsComponent }, 
 
     ]
   },

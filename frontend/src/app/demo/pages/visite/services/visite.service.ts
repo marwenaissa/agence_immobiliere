@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Visiteur } from '../models/visite.model';
 
 export interface Visite {
   id: number;
@@ -29,6 +30,11 @@ export class VisiteService {
   updateVisite(bienId: string, visiteId: number, changes: Partial<Visite>) {
     return this.http.put<Visite>(`http://127.0.0.1:8000/api/biens/${bienId}/visites/${visiteId}`, changes);
     }
+
+    getAllVisiteurs() {
+    return this.http.get<Visiteur[]>('http://127.0.0.1:8000/api/visiteurs');
+  }
+
 
 
 

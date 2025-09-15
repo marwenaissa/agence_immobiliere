@@ -1,0 +1,115 @@
+<div class="container mt-3">
+  <h3 class="page-title">Liste des Opérations</h3>
+  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Opération</button>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Statut</th>
+        <th>Bien</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let op of operations">
+        <td>{{ op.type }}</td>
+        <td>{{ op.dateOperation }}</td>
+        <td>{{ op.montant }}</td>
+        <td>{{ op.statut }}</td>
+        <td>{{ op.bien?.nom }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(op)">Modifier</button>
+          <button class="btn btn-danger btn-sm" (click)="openDeleteModal(op)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Ajout / Modification -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal-dialog modal-dialog-centered styled-modal">
+    <div class="modal-content">
+      <div class="modal-header modal-header-neutral">
+        <h5 class="modal-title">{{ editing ? 'Modifier Opération' : 'Ajouter Opération' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveOperation($event)">
+          <div class="mb-3">
+            <label class="form-label">Type</label>
+            <input type="text" class="form-control" [(ngModel)]="operationForm.type" name="type" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" [(ngModel)]="operationForm.dateOperation" name="dateOperation" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Montant</label>
+            <input type="text" class="form-control" [(ngModel)]="operationForm.montant" name="montant" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Statut</label>
+            <input type="text" class="form-control" [(ngModel)]="operationForm.statut" name="statut" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Bien</label>
+            <select class="form-control" [(ngModel)]="operationForm.bien" name="bien" required>
+              <option *ngFor="let bien of biens" [ngValue]="bien">{{ bien.nom }}</option>
+            </select>
+          </div>
+
+          <!-- Optionnel : acheteur / vendeur / locataire / bailleur -->
+          <div class="mb-3">
+            <label class="form-label">Acheteur ID</label>
+            <input type="number" class="form-control" [(ngModel)]="operationForm.acheteur_id" name="acheteur_id">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Vendeur ID</label>
+            <input type="number" class="form-control" [(ngModel)]="operationForm.vendeur_id" name="vendeur_id">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Locataire ID</label>
+            <input type="number" class="form-control" [(ngModel)]="operationForm.locataire_id" name="locataire_id">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Bailleur ID</label>
+            <input type="number" class="form-control" [(ngModel)]="operationForm.bailleur_id" name="bailleur_id">
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn btn-success">{{ editing ? 'Modifier' : 'Ajouter' }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Suppression -->
+<div class="modal-backdrop" *ngIf="showDeleteModal">
+  <div class="modal-dialog modal-dialog-centered styled-modal">
+    <div class="modal-content">
+      <div class="modal-header modal-header-neutral">
+        <h5 class="modal-title">Confirmer la suppression</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Voulez-vous vraiment supprimer l'opération <strong>{{ operationToDelete?.type }}</strong> ?</p>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-secondary me-2" (click)="closeDeleteModal()">Annuler</button>
+          <button class="btn btn-danger" (click)="confirmDelete()">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

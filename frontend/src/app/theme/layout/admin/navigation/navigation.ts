@@ -31,7 +31,77 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
   {
+    id: 'utilisateurs',
+    title: 'Utilisateurs',
+    type: 'collapse',
+    icon: 'feather icon-users',
+    children: [
+      {
+        id: 'visiteurs',
+        title: 'Visiteurs',
+        type: 'collapse',
+        children: [
+          { id: 'list-visiteurs', title: 'Liste des visiteurs', type: 'item', url: '/utilisateurs/visiteurs/list' },
+          { id: 'add-visiteur', title: 'Ajouter un visiteur', type: 'item', url: '/utilisateurs/visiteurs/add' }
+        ]
+      },
+      {
+        id: 'clients',
+        title: 'Clients',
+        type: 'collapse',
+        children: [
+          { id: 'list-clients', title: 'Liste des clients', type: 'item', url: '/utilisateurs/clients/list' },
+          { id: 'add-client', title: 'Ajouter un client', type: 'item', url: '/utilisateurs/clients/add' }
+        ]
+      },
+      {
+        id: 'proprietaires',
+        title: 'Propriétaires',
+        type: 'collapse',
+        children: [
+          { id: 'list-proprietaires', title: 'Liste des propriétaires', type: 'item', url: '/utilisateurs/proprietaires/list' },
+          { id: 'add-proprietaire', title: 'Ajouter un propriétaire', type: 'item', url: '/utilisateurs/proprietaires/add' }
+        ]
+      },
+      {
+        id: 'agents',
+        title: 'Agents',
+        type: 'collapse',
+        children: [
+          { id: 'list-agents', title: 'Liste des agents', type: 'item', url: '/utilisateurs/agents/list' },
+          { id: 'add-agent', title: 'Ajouter un agent', type: 'item', url: '/utilisateurs/agents/add' }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    id: 'geographie',
+    title: 'Géographie',
+    type: 'collapse',
+    icon: 'feather icon-map',
+    children: [
+      {
+        id: 'villes',
+        title: 'Villes',
+        type: 'item',
+        url: '/villes'
+      },
+      {
+        id: 'departements',
+        title: 'Départements',
+        type: 'item',
+        url: '/departements'
+      }
+    ]
+  },
+
+
+  /* {
     id: 'ui-element',
     title: 'UI ELEMENT',
     type: 'group',
@@ -82,120 +152,20 @@ export const NavigationItems: NavigationItem[] = [
         ]
       }
     ]
-  },
-  {
-    id: 'forms',
-    title: 'Forms & Tables',
-    type: 'group',
-    icon: 'icon-group',
-    children: [
-      {
-        id: 'forms-element',
-        title: 'Form Elements',
-        type: 'item',
-        url: '/forms',
-        classes: 'nav-item',
-        icon: 'feather icon-file-text'
-      },
-      {
-        id: 'tables',
-        title: 'Tables',
-        type: 'item',
-        url: '/tables',
-        classes: 'nav-item',
-        icon: 'feather icon-server'
-      }
-    ]
-  },
-  {
-    id: 'chart-maps',
-    title: 'Chart',
-    type: 'group',
-    icon: 'icon-charts',
-    children: [
-      {
-        id: 'apexChart',
-        title: 'ApexChart',
-        type: 'item',
-        url: 'apexchart',
-        classes: 'nav-item',
-        icon: 'feather icon-pie-chart'
-      }
-    ]
-  },
+  }, */
+ 
+ 
   {
     id: 'pages',
     title: 'Pages',
     type: 'group',
     icon: 'icon-pages',
     children: [
-      {
-        id: 'auth',
-        title: 'Authentication',
-        type: 'collapse',
-        icon: 'feather icon-lock',
-        children: [
-          {
-            id: 'signup',
-            title: 'Sign up',
-            type: 'item',
-            url: '/register',
-            target: true,
-            breadcrumbs: false
-          },
-          {
-            id: 'signin',
-            title: 'Sign in',
-            type: 'item',
-            url: '/login',
-            target: true,
-            breadcrumbs: false
-          }
-        ]
-      },
-      {
-        id: 'sample-page',
-        title: 'Sample Page',
-        type: 'item',
-        url: '/sample-page',
-        classes: 'nav-item',
-        icon: 'feather icon-sidebar'
-      },
-      {
-        id: 'disabled-menu',
-        title: 'Disabled Menu',
-        type: 'item',
-        url: 'javascript:',
-        classes: 'nav-item disabled',
-        icon: 'feather icon-power',
-        external: true
-      },
-      {
-        id: 'buy_now',
-        title: 'Buy Now',
-        type: 'item',
-        icon: 'feather icon-book',
-        classes: 'nav-item',
-        url: 'https://codedthemes.com/item/datta-able-angular/',
-        target: true,
-        external: true
-      },
-      {
-        id: 'Villes',
-        title: 'Villes',
-        type: 'item',
-        icon: 'feather icon-map-pin',
-        classes: 'nav-item',
-        url: '/villes'   // <-- le path défini dans app-routing.module.ts
-      },
-      {
-      id: 'Departement',
-      title: 'Departement',
-      type: 'item',
-      icon: 'feather icon-map-pin',
-      classes: 'nav-item',
-      url: '/departements'
-      },
+      
+   
+     
+      
+      
       { 
         id: 'bienImmobilier',
         title: 'Bien Immobilier',
@@ -203,8 +173,162 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-map-pin',
         classes: 'nav-item',
         url: '/bien-immobilier' 
-      }
+      },
+
+            
+      { 
+        id: 'operation',
+        title: 'operation',
+        type: 'item',
+        icon: 'feather icon-map-pin',
+        classes: 'nav-item',
+        url: '/operation' 
+      },
+      
+
+
+
+      
+
+      
+      {
+        id: 'biens',
+        title: 'Biens',
+        type: 'collapse',
+        icon: 'feather icon-list',
+        children: [
+          { id: 'list-biens', title: 'Liste des biens', type: 'item', url: '/biens/list' },
+          { id: 'add-bien', title: 'Ajouter un bien', type: 'item', url: '/biens/add' },
+          { id: 'details-visites', title: 'Détails / Visites', type: 'item', url: '/biens/details' }
+        ]
+      },
+      {
+        id: 'visites',
+        title: 'Visites',
+        type: 'collapse',
+        icon: 'feather icon-calendar',
+        children: [
+          { id: 'planifier', title: 'Planifier une visite', type: 'item', url: '/visites/planifier' },
+          { id: 'calendrier', title: 'Calendrier des visites', type: 'item', url: '/visites/calendrier' },
+          { id: 'historique', title: 'Historique des visites', type: 'item', url: '/visites/historique' }
+        ]
+      },
+      {
+        id: 'vente',
+        title: 'Vente',
+        type: 'collapse',
+        icon: 'feather icon-shopping-cart',
+        children: [
+          {
+            id: 'liste-ventes',
+            title: 'Liste des ventes',
+            type: 'item',
+            url: '/vente/liste',
+            breadcrumbs: true
+          },
+          {
+            id: 'ajouter-vente',
+            title: 'Ajouter une vente',
+            type: 'item',
+            url: '/vente/ajouter',
+            breadcrumbs: true
+          }
+        ]
+      },
+      {
+        id: 'location',
+        title: 'Location',
+        type: 'collapse',
+        icon: 'feather icon-home',
+        children: [
+          {
+            id: 'liste-locations',
+            title: 'Liste des locations',
+            type: 'item',
+            url: '/location/liste',
+            breadcrumbs: true
+          },
+          {
+            id: 'ajouter-location',
+            title: 'Ajouter une location',
+            type: 'item',
+            url: '/location/ajouter',
+            breadcrumbs: true
+          }
+        ]
+      },
+
+   
+
+
+
+      /* {
+        id: 'operations',
+        title: 'Opérations',
+        type: 'collapse',
+        icon: 'feather icon-dollar-sign',
+        children: [
+          {
+            id: 'vente',
+            title: 'Achat / Vente',
+            type: 'collapse',
+            children: [
+              { id: 'list-ventes', title: 'Liste des ventes', type: 'item', url: '/operations/ventes/list' },
+              { id: 'add-vente', title: 'Ajouter une vente', type: 'item', url: '/operations/ventes/add' },
+              { id: 'stats-ventes', title: 'Statistiques ventes', type: 'item', url: '/operations/ventes/stats' }
+            ]
+          },
+          {
+            id: 'location',
+            title: 'Location',
+            type: 'collapse',
+            children: [
+              { id: 'list-locations', title: 'Liste des locations', type: 'item', url: '/operations/locations/list' },
+              { id: 'add-location', title: 'Ajouter une location', type: 'item', url: '/operations/locations/add' },
+              { id: 'stats-locations', title: 'Statistiques locations', type: 'item', url: '/operations/locations/stats' }
+            ]
+          }
+        ]
+      }, */
+    
+      
+
+      
 
     ]
-  }
+  },
+
+  {
+  id: 'pages',
+  title: 'Pages',
+  type: 'group',
+  icon: 'icon-pages',
+  children: [
+    {
+      id: 'statistiques',
+      title: 'Statistiques',
+      type: 'collapse',
+      icon: 'feather icon-bar-chart-2',
+      children: [
+        {
+          id: 'ventes-stat',
+          title: 'Ventes',
+          type: 'item', // lien direct vers le composant VentesStatComponent
+          url: '/operations/ventes/statistiques'
+        },
+        {
+          id: 'locations-stat',
+          title: 'Locations',
+          type: 'item', // lien direct vers le composant LocationsStatComponent
+          url: '/operations/locations/statistiques'
+        }
+      ]
+    }
+  ]
+}
+
+  
+
+
+  
 ];
