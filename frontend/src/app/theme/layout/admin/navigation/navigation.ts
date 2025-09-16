@@ -98,7 +98,7 @@ export const NavigationItems: NavigationItem[] = [
         type: 'collapse',
         icon: 'feather icon-calendar',
         children: [
-         { id: 'planifier', title: 'Planifier une visite', type: 'item', url: '/visites/planifier' },
+         { id: 'planifier', title: 'Planifier une visite', type: 'item', url: 'visites/planifier' },
         { id: 'calendrier', title: 'Calendrier des visites', type: 'item', url: '/visites/calendrier' },
         { id: 'historique', title: 'Historique des visites', type: 'item', url: '/visites/historique' }
         ]
