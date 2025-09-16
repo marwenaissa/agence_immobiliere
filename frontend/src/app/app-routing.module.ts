@@ -72,6 +72,8 @@ const routes: Routes = [
 
 
 
+
+      
       { path: 'visites/planifier', component: PlanifierVisiteComponent },
       { path: 'visites/calendrier', component: CalendrierVisitesComponent },
       { path: 'visites/historique', component: HistoriqueVisitesComponent },
