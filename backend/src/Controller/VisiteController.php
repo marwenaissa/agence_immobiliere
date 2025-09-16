@@ -58,32 +58,31 @@ class VisiteController extends AbstractController
         ], 201);
     }
 
-#[Route('/biens/{id}/visites', name:'get_visites', methods:['GET'])]
-public function getVisites(int $id, EntityManagerInterface $em): JsonResponse
-{
-    $bien = $em->getRepository(BienImmobilier::class)->find($id);
-    if (!$bien) {
-        return $this->json(['error'=>'Bien non trouvé'],404);
+    #[Route('/bien/{id}', name:'get_visites', methods:['GET'])]
+    public function getVisites(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $bien = $em->getRepository(BienImmobilier::class)->find($id);
+        if (!$bien) {
+            return $this->json(['error'=>'Bien non trouvé'],404);
+        }
+
+        $visites = $bien->getVisites()->map(function($v) {
+            $utilisateur = $v->getRelation()?->getUtilisateur(); // 👈 lien vers Utilisateur
+            return [
+                'id' => $v->getId(),
+                'visiteurId' => $v->getRelation()?->getId(),
+                'visiteur' => $utilisateur ? [
+                    'prenom' => $utilisateur->getPrenom(),
+                    'nom' => $utilisateur->getNom()
+                ] : null,
+                'dateProgrammee' => $v->getDateProgrammee()?->format('Y-m-d\TH:i'),
+                'statut' => $v->getStatut(),
+                'commentaire' => $v->getCommentaire(),
+            ];
+        });
+
+        return $this->json($visites);
     }
-
-    $visites = $bien->getVisites()->map(function($v) {
-        $utilisateur = $v->getRelation()?->getUtilisateur(); // 👈 lien vers Utilisateur
-        return [
-            'id' => $v->getId(),
-            'visiteurId' => $v->getRelation()?->getId(),
-            'visiteur' => $utilisateur ? [
-                'prenom' => $utilisateur->getPrenom(),
-                'nom' => $utilisateur->getNom()
-            ] : null,
-            'dateProgrammee' => $v->getDateProgrammee()?->format('Y-m-d\TH:i'),
-            'dateReelle' => $v->getDateReelle()?->format('Y-m-d\TH:i'),
-            'statut' => $v->getStatut(),
-            'commentaire' => $v->getCommentaire(),
-        ];
-    });
-
-    return $this->json($visites);
-}
 
 
 

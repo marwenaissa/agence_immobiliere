@@ -1,14 +1,15 @@
 export interface Visiteur {
+  id: number;
   prenom: string;
   nom: string;
 }
 
 export interface Visite {
   id: number;
-  visiteurId: number | null;
-  visiteur?: Visiteur | null;   // peut être null si l'utilisateur n'existe pas
+  visiteurId: number;
+  visiteur?: Visiteur; // facultatif si l'API renvoie le visiteur complet
   dateProgrammee: string;
-  dateReelle: string | null;
+  dateReelle?: string | null;
   statut: string;
-  commentaire: string | null;
+  commentaire?: string | null;
 }

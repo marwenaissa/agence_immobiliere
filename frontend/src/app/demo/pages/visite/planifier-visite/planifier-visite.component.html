@@ -7,16 +7,19 @@
         <option *ngFor="let b of biens" [value]="b.id">{{ b.titre }}</option>
       </select>
     </div>
+
     <div class="mb-2">
       <label>Visiteur</label>
       <select [(ngModel)]="newVisite.visiteurId" name="visiteurId" class="form-control" required>
         <option *ngFor="let v of visiteurs" [value]="v.id">{{ v.prenom }} {{ v.nom }}</option>
       </select>
     </div>
+
     <div class="mb-2">
       <label>Date programmée</label>
       <input type="datetime-local" [(ngModel)]="newVisite.dateProgrammee" name="dateProgrammee" class="form-control" required>
     </div>
+
     <div class="mb-2">
       <label>Statut</label>
       <select [(ngModel)]="newVisite.statut" name="statut" class="form-control">
@@ -25,10 +28,12 @@
         <option value="annulee">Annulée</option>
       </select>
     </div>
+
     <div class="mb-2">
       <label>Commentaire</label>
       <input type="text" [(ngModel)]="newVisite.commentaire" name="commentaire" class="form-control">
     </div>
+
     <button class="btn btn-primary" type="submit">Ajouter visite</button>
   </form>
 </div>

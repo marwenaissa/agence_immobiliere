@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { VisiteService, Visiteur, Bien, Visite } from '../services/visite.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-planifier-visite',
   standalone: true,
-  imports: [FormsModule, HttpClientModule],
+  imports: [FormsModule, HttpClientModule, CommonModule],
   templateUrl: './planifier-visite.component.html'
 })
 export class PlanifierVisiteComponent implements OnInit {
@@ -22,20 +23,29 @@ export class PlanifierVisiteComponent implements OnInit {
   }
 
   loadBiens() {
-    this.visiteService.getAllBiens().subscribe(b => this.biens = b);
+    this.visiteService.getAllBiens().subscribe({
+      next: b => this.biens = b,
+      error: err => console.error(err)
+    });
   }
 
   loadVisiteurs() {
-    this.visiteService.getAllVisiteurs().subscribe(v => this.visiteurs = v);
+    this.visiteService.getAllVisiteurs().subscribe({
+      next: v => this.visiteurs = v,
+      error: err => console.error(err)
+    });
   }
 
   addVisite() {
-    if (!this.newVisite.bienId || !this.newVisite.visiteurId || !this.newVisite.dateProgrammee) return;
+    if (!this.newVisite.bienId || !this.newVisite.visiteurId || !this.newVisite.dateProgrammee) {
+      alert('Veuillez remplir tous les champs requis !');
+      return;
+    }
 
-    this.visiteService.addVisite(this.newVisite).subscribe({
+    this.visiteService.addVisiteBien(this.newVisite).subscribe({
       next: v => {
-        alert('Visite ajoutée !');
-        this.newVisite = {};
+        alert('Visite ajoutée avec succès !');
+        this.newVisite = {}; // Reset le formulaire
       },
       error: err => console.error(err)
     });

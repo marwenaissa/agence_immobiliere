@@ -32,7 +32,7 @@ export class PlanifierVisiteComponent implements OnInit {
   addVisite() {
     if (!this.newVisite.bienId || !this.newVisite.visiteurId || !this.newVisite.dateProgrammee) return;
 
-    this.visiteService.addVisite(this.newVisite).subscribe({
+    this.visiteService.addVisiteBien(this.newVisite).subscribe({
       next: v => {
         alert('Visite ajoutée !');
         this.newVisite = {};

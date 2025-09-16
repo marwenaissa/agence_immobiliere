@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BienImmobilierService } from './services/bien-immobilier.service';
 import { BienImmobilier } from './models/bien-immobilier.model';
 import { PieceJointeComponent } from '../piece-jointe/piece-jointe.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bien-immobilier',
@@ -32,7 +33,8 @@ export class BienImmobilierComponent implements OnInit {
   // ✅ Toujours tableau de fichiers
   selectedFiles: File[] = [];
 
-  constructor(private bienService: BienImmobilierService) {}
+  constructor(private bienService: BienImmobilierService, private router: Router) {}
+
 
   ngOnInit(): void {
     this.loadBiens();
@@ -153,4 +155,12 @@ export class BienImmobilierComponent implements OnInit {
   managePieces(bienId: number) {
     this.selectedBienIdForPieces = bienId;
   }
+
+
+
+   planifierVisite(bien: any) {
+    this.router.navigate(['/bien-visite', bien.id]);
+  }
+
+
 }

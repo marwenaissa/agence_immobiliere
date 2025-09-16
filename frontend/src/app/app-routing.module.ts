@@ -65,16 +65,18 @@ const routes: Routes = [
         path: 'departements',   // <-- ICI : "departements" (pluriel)
         component: DepartementsComponent
       },
-      { path: 'bien-immobilier', 
-        component: BienImmobilierComponent 
-      },
-      { path: 'visites/:id', component: BienVisiteComponent }, 
-      { path: 'vente', component: OperationsComponent },
+      
+        { path: 'vente', component: OperationsComponent },
       { path: 'location', component: OperationsComponent },
+      { path: 'bien-immobilier', component: BienImmobilierComponent },
+
+
 
       { path: 'visites/planifier', component: PlanifierVisiteComponent },
       { path: 'visites/calendrier', component: CalendrierVisitesComponent },
       { path: 'visites/historique', component: HistoriqueVisitesComponent },
+       { path: 'bien-visite/:id', component: BienVisiteComponent },
+
 
 
     ]
