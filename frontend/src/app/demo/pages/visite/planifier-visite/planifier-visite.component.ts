@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { VisiteService, Visiteur, Bien, Visite } from './services/visite.service';
+import { VisiteService, Visiteur, Bien, Visite } from '../services/visite.service';
 
 @Component({
   selector: 'app-planifier-visite',
