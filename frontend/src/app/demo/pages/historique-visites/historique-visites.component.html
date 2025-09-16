@@ -1,0 +1,30 @@
+<div class="historique-visites">
+  <h2>Historique des visites</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Bien</th>
+        <th>Visiteur</th>
+        <th>Date programmée</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let visite of paginatedVisites">
+        <td>{{ visite.id }}</td>
+        <td>{{ visite.bien?.titre || visite.bienId }}</td>
+        <td>{{ visite.visiteur ? (visite.visiteur.prenom + ' ' + visite.visiteur.nom) : visite.visiteurId }}</td>
+        <td>{{ visite.dateProgrammee }}</td>
+        <td>{{ visite.statut }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="page === 1">Précédent</button>
+    <span>Page {{ page }}</span>
+    <button (click)="nextPage()" [disabled]="page * pageSize >= visites.length">Suivant</button>
+  </div>
+</div>

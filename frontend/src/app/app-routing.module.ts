@@ -7,15 +7,15 @@ import { GuestComponent } from './theme/layout/guest/guest.component';
 import { VillesComponent } from './demo/pages/villes/villes.component';
 import { DepartementsComponent } from './demo/pages/departements/departements.component';
 import { BienImmobilierComponent } from './demo/pages/bien-immobilier/bien-immobilier.component';
-import { BienVisiteComponent } from './demo/pages/visite/bien-visite/bien-visite.component';
+import { BienVisiteComponent } from './demo/pages/bien-visite/bien-visite.component';
 import { OperationsComponent } from './demo/pages/operation/operation.component';
 
    
-import { PlanifierVisiteComponent } from './demo/pages/visite/planifier-visite/planifier-visite.component'; 
+import { PlanifierVisiteComponent } from './demo/pages/planifier-visite/planifier-visite.component'; 
 
-import { CalendrierVisitesComponent } from './demo/pages/visite/calendrier-visites/calendrier-visites.component';
+import { CalendrierVisitesComponent } from './demo/pages/calendrier-visites/calendrier-visites.component';
 
-import { HistoriqueVisitesComponent } from './demo/pages/visite/historique-visites/historique-visites.component';
+import { HistoriqueVisitesComponent } from './demo/pages/historique-visites/historique-visites.component';
 
   PlanifierVisiteComponent 
   CalendrierVisitesComponent 

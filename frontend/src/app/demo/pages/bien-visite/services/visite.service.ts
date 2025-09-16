@@ -61,10 +61,7 @@ export class VisiteService {
     return this.http.get<Visite[]>(`${this.apiUrl}/bien/${bienId}`);
   }
 
-  // Récupérer toutes les visites d'un bien spécifique
-  getAllVisites(): Observable<Visite[]> {
-    return this.http.get<Visite[]>(`${this.apiUrl}/visites`);
-  }
+  
 
   // Ajouter une visite (tous biens, bienId à l'intérieur de visite)
   addVisiteBien(visite: Partial<Visite>): Observable<Visite> {

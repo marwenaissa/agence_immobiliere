@@ -1,7 +1,7 @@
     import { Component, OnInit } from '@angular/core';
     import { ActivatedRoute } from '@angular/router';
-    import { VisiteService } from '../services/visite.service';
-    import { Visite, Visiteur } from '../models/visite.model';
+    import { VisiteService } from './services/visite.service';
+    import { Visite, Visiteur } from './models/visite.model';
     import { CommonModule } from '@angular/common';
     import { FormsModule } from '@angular/forms';
     import { FullCalendarModule } from '@fullcalendar/angular';

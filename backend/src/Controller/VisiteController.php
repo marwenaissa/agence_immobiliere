@@ -36,10 +36,7 @@ class VisiteController extends AbstractController
             $visite->setDateProgrammee(new \DateTime($data['dateProgrammee']));
         }
 
-        // Optionnel : dateReelle au moment de la visite, ou à null
-        if (!empty($data['dateReelle'])) {
-            $visite->setDateReelle(new \DateTime($data['dateReelle']));
-        }
+       
 
         $visite->setStatut($data['statut'] ?? 'programmee');
         $visite->setCommentaire($data['commentaire'] ?? null);
@@ -52,11 +49,41 @@ class VisiteController extends AbstractController
             'bienId' => $bien->getId(),
             'visiteurId' => $visite->getRelation()?->getId(),
             'dateProgrammee' => $visite->getDateProgrammee()?->format('Y-m-d\TH:i'),
-            'dateReelle' => $visite->getDateReelle()?->format('Y-m-d\TH:i'),
             'statut' => $visite->getStatut(),
             'commentaire' => $visite->getCommentaire()
         ], 201);
     }
+
+    #[Route('/visites', name: 'get_all_visites', methods: ['GET'])]
+    public function getAllVisites(EntityManagerInterface $em): JsonResponse
+    {
+        $visites = $em->getRepository(Visite::class)->findAll();
+
+        $result = array_map(function($v) {
+            $utilisateur = $v->getRelation()?->getUtilisateur(); // lien vers l'utilisateur
+            $bien = $v->getBien(); // si la relation bien existe
+
+            return [
+                'id' => $v->getId(),
+                'bienId' => $bien?->getId(),
+                'bien' => $bien ? [
+                    'titre' => $bien->getTitre()
+                ] : null,
+                'visiteurId' => $v->getRelation()?->getId(),
+                'visiteur' => $utilisateur ? [
+                    'prenom' => $utilisateur->getPrenom(),
+                    'nom' => $utilisateur->getNom()
+                ] : null,
+                'dateProgrammee' => $v->getDateProgrammee()?->format('Y-m-d\TH:i'),
+                'statut' => $v->getStatut(),
+                'commentaire' => $v->getCommentaire(),
+            ];
+        }, $visites);
+
+        return $this->json($result);
+    }
+
+
 
     #[Route('/bien/{id}', name:'get_visites', methods:['GET'])]
     public function getVisites(int $id, EntityManagerInterface $em): JsonResponse

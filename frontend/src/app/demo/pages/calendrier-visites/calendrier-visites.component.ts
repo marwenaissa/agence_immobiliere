@@ -2,13 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { VisiteService, Visite } from '../services/visite.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CalendrierVisites, Visite } from './services/calendrier-visites.service';
 
 @Component({
   selector: 'app-calendrier-visites',
   standalone: true,
-  imports: [FullCalendarModule],
-  templateUrl: './calendrier-visites.component.html'
+  imports: [FullCalendarModule, HttpClientModule], // <-- Ajout HttpClientModule
+  templateUrl: './calendrier-visites.component.html',
+  styleUrls: ['./calendrier-visites.component.scss'],
+    providers: [CalendrierVisites] // <-- s'assure que le service est injecté
+  
 })
 export class CalendrierVisitesComponent implements OnInit {
   calendarOptions: any = {
@@ -17,14 +21,14 @@ export class CalendrierVisitesComponent implements OnInit {
     events: []
   };
 
-  constructor(private visiteService: VisiteService) {}
+  constructor(private calendrierService: CalendrierVisites) {}
 
   ngOnInit(): void {
     this.loadVisites();
   }
 
   loadVisites() {
-    this.visiteService.getAllVisites().subscribe(visites => {
+    this.calendrierService.getAllVisites().subscribe(visites => {
       this.calendarOptions.events = visites.map(v => ({
         id: v.id,
         title: v.visiteur ? `${v.visiteur.prenom} ${v.visiteur.nom}` : `Visite ${v.id}`,
