@@ -63,8 +63,8 @@ export const NavigationItems: NavigationItem[] = [
     type: 'group',
     icon: 'feather icon-map',
     children: [
-      { id: 'villes', title: 'Villes', type: 'item', url: '/villes' },
-      { id: 'departements', title: 'Départements', type: 'item', url: '/departements' }
+      { id: 'villes', title: 'Villes', type: 'item', icon: 'feather icon-map-pin', url: '/villes' },
+      { id: 'departements', title: 'Départements', type: 'item',icon: 'feather icon-map-pin', url: '/departements' }
     ]
   },
 
@@ -76,10 +76,10 @@ export const NavigationItems: NavigationItem[] = [
     icon: 'icon-pages',
     children: [
 
-      { id: 'bienImmobilier', title: 'Bien Immobilier', type: 'item', icon: 'feather icon-map-pin', classes: 'nav-item', url: '/bien-immobilier' },
+      { id: 'bienImmobilier', title: 'Bien Immobilier', type: 'item', icon: 'feather icon-home', classes: 'nav-item', url: '/bien-immobilier' },
 
       // Biens
-      {
+      /* {
         id: 'biens',
         title: 'Biens',
         type: 'collapse',
@@ -89,7 +89,7 @@ export const NavigationItems: NavigationItem[] = [
           { id: 'add-bien', title: 'Ajouter un bien', type: 'item', url: '/biens/add' },
           { id: 'details-visites', title: 'Détails / Visites', type: 'item', url: '/biens/details' }
         ]
-      },
+      }, */
 
       // Visites
       {
@@ -104,6 +104,17 @@ export const NavigationItems: NavigationItem[] = [
         ]
       },
 
+    
+
+      // Location
+      {
+        id: 'location',
+        title: 'Location',
+        type: 'item',
+        icon: 'feather icon-edit',
+        url: '/location'
+      },
+
       // Vente
       {
         id: 'vente',
@@ -111,17 +122,7 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         icon: 'feather icon-shopping-cart',
         url: '/vente'
-      },
-
-      // Location
-      {
-        id: 'location',
-        title: 'Location',
-        type: 'item',
-        icon: 'feather icon-home',
-        url: '/location'
       }
-
 
     ]
   },
