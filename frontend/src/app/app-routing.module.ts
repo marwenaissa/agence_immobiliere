@@ -57,7 +57,9 @@ const routes: Routes = [
         component: BienImmobilierComponent 
       },
       { path: 'visites/:id', component: VisiteComponent }, 
-      { path: 'operation', component: OperationsComponent }, 
+      { path: 'vente', component: OperationsComponent },
+      { path: 'location', component: OperationsComponent },
+      { path: 'location', component: OperationsComponent },    
 
     ]
   },

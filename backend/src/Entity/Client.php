@@ -28,7 +28,7 @@ class Client
     /**
      * @var Collection<int, OperationBien>
      */
-    #[ORM\OneToMany(mappedBy: 'acheteur', targetEntity: OperationBien::class)]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: OperationBien::class)]
     private Collection $operationBiens;
 
     public function __construct()
@@ -49,7 +49,6 @@ class Client
     public function setProfession(?string $profession): static
     {
         $this->profession = $profession;
-
         return $this;
     }
 
@@ -61,7 +60,6 @@ class Client
     public function setUtilisateur(Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-
         return $this;
     }
 
@@ -88,7 +86,7 @@ class Client
     {
         if (!$this->operationBiens->contains($operationBien)) {
             $this->operationBiens->add($operationBien);
-            $operationBien->setAcheteur($this);
+            $operationBien->setClient($this); // <-- correspond au champ "client" de OperationBien
         }
 
         return $this;
@@ -97,9 +95,8 @@ class Client
     public function removeOperationBien(OperationBien $operationBien): static
     {
         if ($this->operationBiens->removeElement($operationBien)) {
-            // set the owning side to null (unless already changed)
-            if ($operationBien->getAcheteur() === $this) {
-                $operationBien->setAcheteur(null);
+            if ($operationBien->getClient() === $this) {
+                $operationBien->setClient(null);
             }
         }
 

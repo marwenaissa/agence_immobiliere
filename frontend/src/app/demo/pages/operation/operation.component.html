@@ -1,32 +1,56 @@
-<div class="container mt-3">
-  <h3 class="page-title">Liste des Opérations</h3>
-  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Opération</button>
+<div class="container mt-4">
+  <h3>Liste des opérations {{ operationType | titlecase }}</h3>
 
-  <table class="table table-bordered">
+  <div class="mb-3">
+    <button class="btn btn-primary" (click)="openCreateModal()">Ajouter {{ operationType }}</button>
+  </div>
+
+  <table class="table table-bordered" *ngIf="operations.length > 0; else noOps">
     <thead>
       <tr>
+        <th>ID</th>
         <th>Type</th>
         <th>Date</th>
         <th>Montant</th>
         <th>Statut</th>
         <th>Bien</th>
+        <th *ngIf="operationType === 'vente'">Acheteur</th>
+        <th *ngIf="operationType === 'vente'">Vendeur</th>
+        <th *ngIf="operationType === 'location'">Locataire</th>
+        <th *ngIf="operationType === 'location'">Bailleur</th>
+        <th>Commentaire</th>
+
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let op of operations">
+        <td>{{ op.id }}</td>
         <td>{{ op.type }}</td>
-        <td>{{ op.dateOperation }}</td>
+        <td>{{ op.dateOperation | date:'shortDate' }}</td>
         <td>{{ op.montant }}</td>
         <td>{{ op.statut }}</td>
-        <td>{{ op.bien?.nom }}</td>
+        <td>{{ op.bien?.titre || op.bien?.nom }}</td>
+        <td *ngIf="operationType === 'vente'">{{ getClientName(op, 'client') }}</td>
+        <td *ngIf="operationType === 'vente'">{{ getClientName(op, 'proprietaire') }}</td>
+        <td *ngIf="operationType === 'location'">{{ getClientName(op, 'client') }}</td>
+        <td *ngIf="operationType === 'location'">{{ getClientName(op, 'proprietaire') }}</td>
+
+        <td>{{ op.commentaire }}</td>
+
         <td>
-          <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(op)">Modifier</button>
-          <button class="btn btn-danger btn-sm" (click)="openDeleteModal(op)">Supprimer</button>
+          <button class="btn btn-sm btn-warning me-1" (click)="openEditModal(op)">Modifier</button>
+          <button class="btn btn-sm btn-danger" (click)="openDeleteModal(op)">Supprimer</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <ng-template #noOps>
+    <div class="alert alert-info">
+      Aucune opération {{ operationType }} disponible.
+    </div>
+  </ng-template>
 </div>
 
 <!-- Modal Ajout / Modification -->
@@ -34,14 +58,14 @@
   <div class="modal-dialog modal-dialog-centered styled-modal">
     <div class="modal-content">
       <div class="modal-header modal-header-neutral">
-        <h5 class="modal-title">{{ editing ? 'Modifier Opération' : 'Ajouter Opération' }}</h5>
+        <h5 class="modal-title">{{ editing ? 'Modifier' : 'Ajouter' }} {{ operationType | titlecase }}</h5>
         <button type="button" class="btn-close" (click)="closeModal()"></button>
       </div>
       <div class="modal-body">
         <form (ngSubmit)="saveOperation($event)">
           <div class="mb-3">
             <label class="form-label">Type</label>
-            <input type="text" class="form-control" [(ngModel)]="operationForm.type" name="type" required>
+            <input type="text" class="form-control" [value]="operationType" disabled>
           </div>
 
           <div class="mb-3">
@@ -51,7 +75,7 @@
 
           <div class="mb-3">
             <label class="form-label">Montant</label>
-            <input type="text" class="form-control" [(ngModel)]="operationForm.montant" name="montant" required>
+            <input type="number" class="form-control" [(ngModel)]="operationForm.montant" name="montant" required>
           </div>
 
           <div class="mb-3">
@@ -62,29 +86,54 @@
           <div class="mb-3">
             <label class="form-label">Bien</label>
             <select class="form-control" [(ngModel)]="operationForm.bien" name="bien" required>
-              <option *ngFor="let bien of biens" [ngValue]="bien">{{ bien.nom }}</option>
+              <option *ngFor="let bien of biens" [ngValue]="bien">{{ bien.titre || bien.nom }}</option>
             </select>
           </div>
 
-          <!-- Optionnel : acheteur / vendeur / locataire / bailleur -->
-          <div class="mb-3">
-            <label class="form-label">Acheteur ID</label>
-            <input type="number" class="form-control" [(ngModel)]="operationForm.acheteur_id" name="acheteur_id">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Vendeur ID</label>
-            <input type="number" class="form-control" [(ngModel)]="operationForm.vendeur_id" name="vendeur_id">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Locataire ID</label>
-            <input type="number" class="form-control" [(ngModel)]="operationForm.locataire_id" name="locataire_id">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Bailleur ID</label>
-            <input type="number" class="form-control" [(ngModel)]="operationForm.bailleur_id" name="bailleur_id">
+          <div *ngIf="operationType === 'vente'">
+            <div class="mb-3">
+              <label class="form-label">Acheteur</label>
+              <select class="form-control" [(ngModel)]="operationForm.client" name="client">
+                <option *ngFor="let c of clients" [ngValue]="c">{{ c.nomUtilisateur }} {{ c.prenomUtilisateur }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Vendeur</label>
+              <select class="form-control" [(ngModel)]="operationForm.proprietaire" name="proprietaire">
+                <option *ngFor="let p of proprietaires" [ngValue]="p">{{ p.nomUtilisateur }} {{ p.prenomUtilisateur }}</option>
+              </select>
+            </div>
           </div>
 
-          <div class="d-flex justify-content-end">
+          <div *ngIf="operationType === 'location'">
+            <div class="mb-3">
+              <label class="form-label">Locataire</label>
+              <select class="form-control" [(ngModel)]="operationForm.client" name="client">
+                <option *ngFor="let c of clients" [ngValue]="c">{{ c.nomUtilisateur }} {{ c.prenomUtilisateur }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Bailleur</label>
+              <select class="form-control" [(ngModel)]="operationForm.proprietaire" name="proprietaire">
+                <option *ngFor="let p of proprietaires" [ngValue]="p">{{ p.nomUtilisateur }} {{ p.prenomUtilisateur }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date de début</label>
+              <input type="date" class="form-control" [(ngModel)]="operationForm.dateDebut" name="dateDebut" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date de fin</label>
+              <input type="date" class="form-control" [(ngModel)]="operationForm.dateFin" name="dateFin" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Commentaire</label>
+            <input type="text" class="form-control" [(ngModel)]="operationForm.commentaire" name="commentaire" required>
+          </div>
+
+          <div class="d-flex justify-content-end mt-3">
             <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Annuler</button>
             <button type="submit" class="btn btn-success">{{ editing ? 'Modifier' : 'Ajouter' }}</button>
           </div>
@@ -93,23 +142,3 @@
     </div>
   </div>
 </div>
-
-<!-- Modal Suppression -->
-<div class="modal-backdrop" *ngIf="showDeleteModal">
-  <div class="modal-dialog modal-dialog-centered styled-modal">
-    <div class="modal-content">
-      <div class="modal-header modal-header-neutral">
-        <h5 class="modal-title">Confirmer la suppression</h5>
-        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
-      </div>
-      <div class="modal-body">
-        <p>Voulez-vous vraiment supprimer l'opération <strong>{{ operationToDelete?.type }}</strong> ?</p>
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-secondary me-2" (click)="closeDeleteModal()">Annuler</button>
-          <button class="btn btn-danger" (click)="confirmDelete()">Supprimer</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-

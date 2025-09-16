@@ -1,5 +1,6 @@
 <div class="container mt-3">
   <h3 class="page-title">Liste des Biens Immobiliers</h3>
+  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Bien</button>
 
   <table class="table table-bordered">
     <thead>
@@ -24,9 +25,32 @@
         <td>{{ bien.type?.libelle || '-' }}</td>
         <td>{{ bien.proprietaire?.utilisateur?.nom || '-' }}</td>
         <td>
-          <button class="btn btn-primary btn-sm" (click)="planifierVisite(bien)">Voir planning visites</button>
+          <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(bien)">Modifier</button>
+          <button class="btn btn-danger btn-sm me-2" (click)="deleteBien(bien.id)">Supprimer</button>
+          <!-- Nouveau bouton Planifier Visite -->
+          <button class="btn btn-info btn-sm" (click)="planifierVisite(bien)">Planifier une visite</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <!-- Modal Ajout / Modification Bien (inchangé) -->
+  <div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal-dialog modal-dialog-centered styled-modal modal-lg">
+      <div class="modal-content">
+        <div class="modal-header modal-header-neutral">
+          <h5 class="modal-title">{{ editing ? 'Modifier Bien' : 'Ajouter Bien' }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveBien($event)">
+            <!-- ... tous les champs existants ... -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pièces jointes -->
+  <app-piece-jointe *ngIf="selectedBienIdForPieces" [bienId]="selectedBienIdForPieces"></app-piece-jointe>
 </div>

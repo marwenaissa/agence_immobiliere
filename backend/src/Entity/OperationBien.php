@@ -27,17 +27,12 @@ class OperationBien
 
     // --- Vente ---
     #[ORM\ManyToOne(targetEntity: Client::class)]
-    private ?Client $acheteur = null;
+    private ?Client $client = null;
 
     #[ORM\ManyToOne(targetEntity: Proprietaire::class)]
-    private ?Proprietaire $vendeur = null;
+    private ?Proprietaire $proprietaire = null;
 
-    // --- Location ---
-    #[ORM\ManyToOne(targetEntity: Client::class)]
-    private ?Client $locataire = null;
-
-    #[ORM\ManyToOne(targetEntity: Proprietaire::class)]
-    private ?Proprietaire $bailleur = null;
+    
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $dateDebut = null;
@@ -102,53 +97,32 @@ class OperationBien
         return $this;
     }
 
-    public function getAcheteur(): ?Client
+    public function getClient(): ?Client
     {
-        return $this->acheteur;
+        return $this->client;
     }
 
-    public function setAcheteur(?Client $acheteur): static
+    public function setClient(?Client $client): static
     {
-        $this->acheteur = $acheteur;
+        $this->client = $client;
 
         return $this;
     }
 
-    public function getVendeur(): ?Proprietaire
+    public function getProprietaire(): ?Proprietaire
     {
-        return $this->vendeur;
+        return $this->proprietaire;
     }
 
-    public function setVendeur(?Proprietaire $vendeur): static
+    public function setProprietaire(?Proprietaire $proprietaire): static
     {
-        $this->vendeur = $vendeur;
+        $this->proprietaire = $proprietaire;
 
         return $this;
     }
 
-    public function getLocataire(): ?Client
-    {
-        return $this->locataire;
-    }
+    
 
-    public function setLocataire(?Client $locataire): static
-    {
-        $this->locataire = $locataire;
-
-        return $this;
-    }
-
-    public function getBailleur(): ?Proprietaire
-    {
-        return $this->bailleur;
-    }
-
-    public function setBailleur(?Proprietaire $bailleur): static
-    {
-        $this->bailleur = $bailleur;
-
-        return $this;
-    }
 
     public function getDateDebut(): ?\DateTimeImmutable
     {

@@ -40,11 +40,17 @@ class Proprietaire
     #[ORM\OneToMany(mappedBy: 'proprietaire', targetEntity: BienImmobilier::class)]
     private Collection $bienImmobiliers;
 
+    /**
+     * @var Collection<int, OperationBien>
+     */
+    #[ORM\OneToMany(mappedBy: 'proprietaire', targetEntity: OperationBien::class)]
+    private Collection $operationBiens;
+
     public function __construct()
     {
         $this->bienImmobiliers = new ArrayCollection();
+        $this->operationBiens = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -59,7 +65,6 @@ class Proprietaire
     public function setProfession(?string $profession): static
     {
         $this->profession = $profession;
-
         return $this;
     }
 
@@ -71,7 +76,6 @@ class Proprietaire
     public function setUtilisateur(Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-
         return $this;
     }
 
@@ -97,7 +101,7 @@ class Proprietaire
         return $this;
     }
 
-     public function getRib(): ?string
+    public function getRib(): ?string
     {
         return $this->rib;
     }
@@ -133,19 +137,43 @@ class Proprietaire
             $this->bienImmobiliers->add($bienImmobilier);
             $bienImmobilier->setProprietaire($this);
         }
-
         return $this;
     }
 
     public function removeBienImmobilier(BienImmobilier $bienImmobilier): static
     {
         if ($this->bienImmobiliers->removeElement($bienImmobilier)) {
-            // set the owning side to null (unless already changed)
             if ($bienImmobilier->getProprietaire() === $this) {
                 $bienImmobilier->setProprietaire(null);
             }
         }
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, OperationBien>
+     */
+    public function getOperationBiens(): Collection
+    {
+        return $this->operationBiens;
+    }
+
+    public function addOperationBien(OperationBien $operationBien): static
+    {
+        if (!$this->operationBiens->contains($operationBien)) {
+            $this->operationBiens->add($operationBien);
+            $operationBien->setProprietaire($this); // correspond au champ "proprietaire" dans OperationBien
+        }
+        return $this;
+    }
+
+    public function removeOperationBien(OperationBien $operationBien): static
+    {
+        if ($this->operationBiens->removeElement($operationBien)) {
+            if ($operationBien->getProprietaire() === $this) {
+                $operationBien->setProprietaire(null);
+            }
+        }
         return $this;
     }
 }

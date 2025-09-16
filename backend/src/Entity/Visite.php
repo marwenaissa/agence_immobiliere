@@ -25,8 +25,6 @@ class Visite
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateProgrammee = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateReelle = null;
 
     #[ORM\Column(length: 50)]
     private ?string $statut = null;
@@ -75,17 +73,7 @@ class Visite
         return $this;
     }
 
-    public function getDateReelle(): ?\DateTimeInterface
-    {
-        return $this->dateReelle;
-    }
-
-    public function setDateReelle(\DateTimeInterface $dateReelle): static
-    {
-        $this->dateReelle = $dateReelle;
-
-        return $this;
-    }
+    
 
     public function getStatut(): ?string
     {
