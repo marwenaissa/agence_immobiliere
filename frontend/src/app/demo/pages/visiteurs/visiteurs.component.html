@@ -1,0 +1,97 @@
+<div class="container mt-3">
+  <h3 class="page-title">Liste des Visiteurs</h3>
+  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Visiteur</button>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>CIN</th>
+        <th>Téléphone</th>
+        <th>Profession</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let v of visiteurs">
+        <td>{{ v.id }}</td>
+        <td>{{ v.nom }}</td>
+        <td>{{ v.prenom }}</td>
+        <td>{{ v.email }}</td>
+        <td>{{ v.cin }}</td>
+        <td>{{ v.telephone }}</td>
+        <td>{{ v.profession }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(v)">Modifier</button>
+          <button class="btn btn-danger btn-sm" (click)="openDeleteModal(v)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Ajout / Edition -->
+<div class="modal-backdrop" *ngIf="showModal">
+  <div class="modal-dialog modal-dialog-centered styled-modal">
+    <div class="modal-content">
+      <div class="modal-header modal-header-neutral">
+        <h5 class="modal-title">{{ editing ? 'Modifier Visiteur' : 'Ajouter Visiteur' }}</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveVisiteur($event)">
+          <div class="mb-3">
+            <label class="form-label">Nom</label>
+            <input type="text" class="form-control" [(ngModel)]="visiteurForm.nom" name="nom" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Prénom</label>
+            <input type="text" class="form-control" [(ngModel)]="visiteurForm.prenom" name="prenom" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="visiteurForm.email" name="email">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">CIN</label>
+            <input type="text" class="form-control" [(ngModel)]="visiteurForm.cin" name="cin">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Téléphone</label>
+            <input type="text" class="form-control" [(ngModel)]="visiteurForm.telephone" name="telephone">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Profession</label>
+            <input type="text" class="form-control" [(ngModel)]="visiteurForm.profession" name="profession">
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Annuler</button>
+            <button type="submit" class="btn btn-success">{{ editing ? 'Modifier' : 'Ajouter' }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Suppression -->
+<div class="modal-backdrop" *ngIf="showDeleteModal">
+  <div class="modal-dialog modal-dialog-centered styled-modal">
+    <div class="modal-content">
+      <div class="modal-header modal-header-neutral">
+        <h5 class="modal-title">Confirmer la suppression</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Voulez-vous vraiment supprimer le visiteur <strong>{{ visiteurToDelete?.nom }} {{ visiteurToDelete?.prenom }}</strong> ?</p>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-secondary me-2" (click)="closeDeleteModal()">Annuler</button>
+          <button class="btn btn-danger" (click)="confirmDelete()">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

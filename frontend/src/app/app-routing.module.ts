@@ -17,6 +17,11 @@ import { CalendrierVisitesComponent } from './demo/pages/calendrier-visites/cale
 
 import { HistoriqueVisitesComponent } from './demo/pages/historique-visites/historique-visites.component';
 
+import { VisiteursComponent } from './demo/pages/visiteurs/visiteurs.component';
+import { ClientsComponent } from './demo/pages/clients/clients.component';
+import { ProprietairesComponent } from './demo/pages/proprietaires/proprietaires.component';
+
+
   PlanifierVisiteComponent 
   CalendrierVisitesComponent 
   PlanifierVisiteComponent 
@@ -72,7 +77,18 @@ const routes: Routes = [
 
 
 
-
+      {
+        path: 'visiteurs/list',
+        component: VisiteursComponent
+      },
+      {
+        path: 'clients/list',
+        component: ClientsComponent
+      },
+      {
+        path: 'proprietaires/list',
+        component: ProprietairesComponent
+      },
       
       { path: 'visites/planifier', component: PlanifierVisiteComponent },
       { path: 'visites/calendrier', component: CalendrierVisitesComponent },

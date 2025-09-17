@@ -54,34 +54,28 @@ class VisiteController extends AbstractController
         ], 201);
     }
 
-    #[Route('/visites', name: 'get_all_visites', methods: ['GET'])]
-    public function getAllVisites(EntityManagerInterface $em): JsonResponse
+    #[Route('/visiteurs', name: 'get_visiteurs', methods: ['GET'])]
+    public function getVisiteurs(EntityManagerInterface $em): JsonResponse
     {
-        $visites = $em->getRepository(Visite::class)->findAll();
+        // On récupère tous les visiteurs
+        $visiteurs = $em->getRepository(Visiteur::class)->findAll();
 
-        $result = array_map(function($v) {
-            $utilisateur = $v->getRelation()?->getUtilisateur(); // lien vers l'utilisateur
-            $bien = $v->getBien(); // si la relation bien existe
-
+        $data = array_map(function(Visiteur $v) {
+            $utilisateur = $v->getUtilisateur(); // relation vers Utilisateur
             return [
                 'id' => $v->getId(),
-                'bienId' => $bien?->getId(),
-                'bien' => $bien ? [
-                    'titre' => $bien->getTitre()
-                ] : null,
-                'visiteurId' => $v->getRelation()?->getId(),
-                'visiteur' => $utilisateur ? [
-                    'prenom' => $utilisateur->getPrenom(),
-                    'nom' => $utilisateur->getNom()
-                ] : null,
-                'dateProgrammee' => $v->getDateProgrammee()?->format('Y-m-d\TH:i'),
-                'statut' => $v->getStatut(),
-                'commentaire' => $v->getCommentaire(),
+                'nom' => $utilisateur?->getNom(),
+                'prenom' => $utilisateur?->getPrenom(),
+                'email' => $utilisateur?->getEmail(),
+                'cin' => $utilisateur?->getCin(),
+                'telephone' => $utilisateur?->getTelephone(),
+                'profession' => $v->getProfession(),
             ];
-        }, $visites);
+        }, $visiteurs);
 
-        return $this->json($result);
+        return $this->json($data);
     }
+
 
 
 

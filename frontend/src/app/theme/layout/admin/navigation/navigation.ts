@@ -46,10 +46,10 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Gestion utilisateurs',
         type: 'collapse', // le menu qui s'ouvre
         children: [
-          { id: 'visiteurs', title: 'Visiteurs', type: 'item', url: '/utilisateurs/visiteurs/list' },
-          { id: 'clients', title: 'Clients', type: 'item', url: '/utilisateurs/clients/list' },
-          { id: 'proprietaires', title: 'Propriétaires', type: 'item', url: '/utilisateurs/proprietaires/list' },
-          { id: 'agents', title: 'Agents', type: 'item', url: '/utilisateurs/agents/list' }
+          { id: 'visiteurs', title: 'Visiteurs', type: 'item', url: '/visiteurs/list' },
+          { id: 'clients', title: 'Clients', type: 'item', url: '/clients/list' },
+          { id: 'proprietaires', title: 'Propriétaires', type: 'item', url: '/proprietaires/list' },
+          { id: 'agents', title: 'Agents', type: 'item', url: '/agents/list' }
         ]
       }
     ]

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Utilisateur;
+use App\Entity\Visiteur;
 
 
 final class UtilisateurController extends AbstractController{
@@ -19,19 +20,8 @@ final class UtilisateurController extends AbstractController{
         ]);
     }
 
-    #[Route('/api/visiteurs', name: 'get_visiteurs', methods: ['GET'])]
-    public function getVisiteurs(EntityManagerInterface $em): JsonResponse
-    {
-        $visiteurs = $em->getRepository(Utilisateur::class)->findAll(); 
-
-        $data = array_map(fn($v) => [
-            'id' => $v->getId(),
-            'prenom' => $v->getPrenom(),
-            'nom' => $v->getNom()
-        ], $visiteurs);
-
-        return $this->json($data);
-    }
+    
+    
 
 
 }

@@ -1,0 +1,36 @@
+<div class="container mt-3">
+  <h3 class="page-title">Liste des Clients</h3>
+  <button class="btn btn-primary mb-3" (click)="openCreateModal()">Ajouter Client</button>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>CIN</th>
+        <th>Téléphone</th>
+        <th>Profession</th>
+        <th>Passeport</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of proprietaires">
+        <td>{{ p.id }}</td>
+        <td>{{ p.nom }}</td>
+        <td>{{ p.prenom }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.cin }}</td>
+        <td>{{ p.telephone }}</td>
+        <td>{{ p.profession }}</td>
+        <td>
+            <button class="btn btn-warning btn-sm me-2" (click)="openEditModal(p)">Modifier</button>
+            <button class="btn btn-danger btn-sm" (click)="openDeleteModal(p)">Supprimer</button>
+        </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>
