@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 
 #[Route('/api')]
 class VisiteController extends AbstractController
@@ -126,6 +128,44 @@ class VisiteController extends AbstractController
             'statut' => $visite->getStatut()
         ]);
     }
+
+        
+    #[Route('/visites/add', name: 'app_visite_add', methods: ['POST'])]
+    public function add(Request $request, EntityManagerInterface $em, HubInterface $hub): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $visite = new Visite();
+
+        // Hydrater correctement
+        $visite->setBien($em->getReference(BienImmobilier::class, $data['bienId']));
+        $visite->setRelation($em->getReference(Visiteur::class, $data['visiteurId']));
+        
+        // ⚡ Convertir la chaîne en DateTime
+        $visite->setDateProgrammee(new \DateTime($data['dateProgrammee']));
+
+        $visite->setStatut($data['statut'] ?? 'programmee');
+        $visite->setCommentaire($data['commentaire'] ?? null);
+
+        $em->persist($visite);
+        $em->flush();
+
+        // Event Mercure
+        $update = new Update(
+            'visites',
+            json_encode([
+                'id' => $visite->getId(),
+                'bien' => $visite->getBien()->getId(),
+                'visiteur' => $visite->getRelation()->getId(),
+                'date' => $visite->getDateProgrammee()->format('Y-m-d H:i'),
+                'statut' => $visite->getStatut(),
+            ])
+        );
+        $hub->publish($update);
+
+        return $this->json(['status' => 'Visite ajoutée']);
+    }
+
 
 
 }

@@ -1,11 +1,7 @@
-// angular import
-import { Component, inject } from '@angular/core';
-
-// bootstrap import
+import { Component, inject, OnInit } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-
-// project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -14,13 +10,22 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
   styleUrls: ['./nav-right.component.scss'],
   providers: [NgbDropdownConfig]
 })
-export class NavRightComponent {
-  // public props
+export class NavRightComponent implements OnInit {
+  notifications: any[] = [];
 
-  // constructor
+  private notificationService = inject(NotificationService);
+
   constructor() {
     const config = inject(NgbDropdownConfig);
-
     config.placement = 'bottom-right';
+  }
+
+  ngOnInit(): void {
+    this.notificationService.getVisiteNotifications().subscribe({
+      next: (notif) => {
+        this.notifications.unshift(notif);
+      },
+      error: (err) => console.error('Erreur notifications:', err)
+    });
   }
 }

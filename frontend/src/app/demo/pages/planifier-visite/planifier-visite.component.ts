@@ -16,8 +16,11 @@ import { VisitePlanifier, Visiteur, Bien, Visite } from './services/visite-plani
 export class PlanifierVisiteComponent implements OnInit {
   biens: Bien[] = [];
   visiteurs: Visiteur[] = [];
-  newVisite: Partial<Visite> = {};
-
+    newVisite: Partial<Visite> = {
+      bienId: null,
+      visiteurId: null,
+      statut: 'programmee'
+    };
   constructor(private visiteService: VisitePlanifier) {}
 
   ngOnInit(): void {
@@ -38,19 +41,22 @@ export class PlanifierVisiteComponent implements OnInit {
       error: (err) => console.error('Erreur lors du chargement des visiteurs :', err)
     });
   }
-
-  addVisite(): void {
-    if (!this.newVisite.bienId || !this.newVisite.visiteurId || !this.newVisite.dateProgrammee) {
-      alert('Veuillez remplir tous les champs requis !');
-      return;
-    }
-
-    this.visiteService.addVisiteBien(this.newVisite).subscribe({
-      next: (v) => {
-        alert('Visite ajoutée avec succès !');
-        this.newVisite = {}; // Reset du formulaire
-      },
-      error: (err) => console.error('Erreur lors de l\'ajout de la visite :', err)
-    });
+  
+addVisite(): void {
+  if (!this.newVisite.bienId || !this.newVisite.visiteurId || !this.newVisite.dateProgrammee) {
+    alert('Veuillez remplir tous les champs requis !');
+    return;
   }
+
+  // Pas besoin de new Date()
+  this.visiteService.addVisiteBien(this.newVisite).subscribe({
+    next: (v) => {
+      alert('Visite ajoutée avec succès !');
+      this.newVisite = {}; // reset du formulaire
+    },
+    error: (err) => console.error('Erreur lors de l\'ajout de la visite :', err)
+  });
+}
+
+
 }

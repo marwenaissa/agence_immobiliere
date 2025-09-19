@@ -46,7 +46,7 @@ export class VisitePlanifier {
 
   // Ajouter une visite pour un bien
   addVisiteBien(visite: Partial<Visite>): Observable<Visite> {
-    return this.http.post<Visite>(`${this.apiUrl}/visites`, visite);
+    return this.http.post<Visite>(`${this.apiUrl}/visites/add`, visite);
   }
 
   // Modifier une visite
