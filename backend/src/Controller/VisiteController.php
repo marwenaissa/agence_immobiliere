@@ -92,11 +92,6 @@ class VisiteController extends AbstractController
     }
 
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> c4213bb (commit 18)
     #[Route('/bien/{id}', name:'get_visites', methods:['GET'])]
     public function getVisites(int $id, EntityManagerInterface $em): JsonResponse
     {

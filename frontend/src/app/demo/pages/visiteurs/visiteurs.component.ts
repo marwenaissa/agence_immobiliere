@@ -29,8 +29,6 @@ export class VisiteursComponent implements OnInit {
   showDeleteModal = false;
   visiteurToDelete: Visiteur | null = null;
 
-<<<<<<< HEAD
-=======
   
   showConvertModal = false;     // Modal conversion
   visiteurToConvertId: number | null = null;
@@ -41,7 +39,6 @@ export class VisiteursComponent implements OnInit {
   totalPages = 0;
   total = 0; // 👈 Ajouté
 
->>>>>>> c4213bb (commit 18)
   constructor(private visiteursService: VisiteursService) {}
 
   ngOnInit(): void {
@@ -130,8 +127,6 @@ export class VisiteursComponent implements OnInit {
       });
     }
   }
-<<<<<<< HEAD
-=======
 
   // Confirmer la conversion visiteur -> client
   confirmConvert(event: Event) {
@@ -185,5 +180,4 @@ export class VisiteursComponent implements OnInit {
 
 
 
->>>>>>> c4213bb (commit 18)
 }
