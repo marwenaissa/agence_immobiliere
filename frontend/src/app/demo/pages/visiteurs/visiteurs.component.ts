@@ -29,6 +29,19 @@ export class VisiteursComponent implements OnInit {
   showDeleteModal = false;
   visiteurToDelete: Visiteur | null = null;
 
+<<<<<<< HEAD
+=======
+  
+  showConvertModal = false;     // Modal conversion
+  visiteurToConvertId: number | null = null;
+  convertPasseport: string = '';
+
+  currentPage = 1;
+  limit = 5;
+  totalPages = 0;
+  total = 0; // 👈 Ajouté
+
+>>>>>>> c4213bb (commit 18)
   constructor(private visiteursService: VisiteursService) {}
 
   ngOnInit(): void {
@@ -36,11 +49,17 @@ export class VisiteursComponent implements OnInit {
   }
 
   loadVisiteurs() {
-    this.visiteursService.getAll().subscribe({
-      next: data => this.visiteurs = data,
+    this.visiteursService.getAll(this.currentPage, this.limit).subscribe({
+      next: (res) => {
+        this.visiteurs = res.data;
+        this.totalPages = res.totalPages;
+        this.total = res.total; // Ajoutez cette ligne
+      },
       error: err => console.error('Erreur API:', err)
     });
   }
+
+
 
   openCreateModal() {
     this.editing = false;
@@ -102,12 +121,69 @@ export class VisiteursComponent implements OnInit {
       });
     } else {
       this.visiteursService.create(this.visiteurForm).subscribe({
-        next: newVisiteur => {
-          this.visiteurs.push(newVisiteur);
-          this.closeModal();
-        },
+        next: response => {
+            const newVisiteur = response.data; // 👈 récupère la vraie donnée
+            this.visiteurs.push(newVisiteur);
+            this.closeModal();
+          },
         error: err => console.error('Erreur ajout:', err)
       });
     }
   }
+<<<<<<< HEAD
+=======
+
+  // Confirmer la conversion visiteur -> client
+  confirmConvert(event: Event) {
+    event.preventDefault();
+
+    if (!this.visiteurToConvertId || !this.convertPasseport) {
+      console.error('ID visiteur ou passeport manquant');
+      return;
+    }
+
+    this.visiteursService.convertVisiteurToClient(this.visiteurToConvertId, this.convertPasseport).subscribe({
+      next: () => {
+        this.loadVisiteurs(); // Actualise la liste des visiteurs
+        this.closeConvertModal();
+        console.log('Visiteur converti avec succès');
+      },
+      error: err => console.error('Erreur conversion visiteur:', err)
+    });
+  }
+
+
+  
+  // Ouvrir le modal de conversion visiteur -> client
+  openConvertModal(visiteurId: number) {
+    this.visiteurToConvertId = visiteurId;
+    this.convertPasseport = '';
+    this.showConvertModal = true;
+  }
+
+  // Fermer le modal de conversion
+  closeConvertModal() {
+    this.visiteurToConvertId = null;
+    this.convertPasseport = '';
+    this.showConvertModal = false;
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadVisiteurs();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadVisiteurs();
+    }
+  }
+
+
+
+
+>>>>>>> c4213bb (commit 18)
 }

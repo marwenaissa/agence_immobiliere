@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Visiteur } from '../models/visiteur.model';
+import { Visiteur,ApiResponse } from '../models/visiteur.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,12 @@ export class VisiteursService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Visiteur[]> {
-    return this.http.get<Visiteur[]>(this.apiUrl);
+  getAll(page: number = 1, limit: number = 5): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}?page=${page}&limit=${limit}`);
   }
-
-  create(visiteur: Visiteur): Observable<Visiteur> {
-    return this.http.post<Visiteur>(this.apiUrl, visiteur);
-  }
+create(visiteur: Visiteur): Observable<ApiResponse> {
+  return this.http.post<ApiResponse>(`${this.apiUrl}/create`, visiteur);
+}
 
   update(id: number, visiteur: Visiteur): Observable<Visiteur> {
     return this.http.put<Visiteur>(`${this.apiUrl}/${id}`, visiteur);

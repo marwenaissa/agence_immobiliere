@@ -57,13 +57,20 @@ class VisiteController extends AbstractController
     }
 
     #[Route('/visiteurs', name: 'get_visiteurs', methods: ['GET'])]
-    public function getVisiteurs(EntityManagerInterface $em): JsonResponse
+    public function getVisiteurs(Request $request, EntityManagerInterface $em): JsonResponse
     {
-        // On récupère tous les visiteurs
-        $visiteurs = $em->getRepository(Visiteur::class)->findAll();
+        $page = max((int) $request->query->get('page', 1), 1);
+        $limit = max((int) $request->query->get('limit', 10), 1);
+        $offset = ($page - 1) * $limit;
+
+        $visiteurRepo = $em->getRepository(Visiteur::class);
+
+        $total = count($visiteurRepo->findAll());
+
+        $visiteurs = $visiteurRepo->findBy([], null, $limit, $offset);
 
         $data = array_map(function(Visiteur $v) {
-            $utilisateur = $v->getUtilisateur(); // relation vers Utilisateur
+            $utilisateur = $v->getUtilisateur();
             return [
                 'id' => $v->getId(),
                 'nom' => $utilisateur?->getNom(),
@@ -75,12 +82,21 @@ class VisiteController extends AbstractController
             ];
         }, $visiteurs);
 
-        return $this->json($data);
+        return $this->json([
+            'data' => $data,
+            'page' => $page,
+            'limit' => $limit,
+            'total' => $total,
+            'totalPages' => ceil($total / $limit),
+        ]);
     }
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c4213bb (commit 18)
     #[Route('/bien/{id}', name:'get_visites', methods:['GET'])]
     public function getVisites(int $id, EntityManagerInterface $em): JsonResponse
     {

@@ -7,3 +7,9 @@ export interface Visiteur {
   telephone?: string;  // numéro de téléphone
   profession?: string; // profession du visiteur
 }
+
+export interface ApiResponse {
+  message: string;
+  data: Visiteur;
+}
+
